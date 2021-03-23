@@ -2,11 +2,7 @@ from Board import *
 
 
 def main():
-	#print('yo')
 	board = Board()
-
-
-	# print(ord('A') - 64)
 
 	print('Enter 1 You make the first move')
 	print('Enter 2 Computer makes the first move')
@@ -73,11 +69,9 @@ def main():
 						print('You Win')
 						game_over = True
 
-				#print('**********' + str(board.get_number_of_empty_cells()))
 				if board.get_number_of_empty_cells() == 0:
 					game_over = True
 					print('It\'s a Draw')
-
 
 		elif select == '3':
 			print('Thank you')
