@@ -1,10 +1,5 @@
 import time
 
-
-
-
-
-
 class Board:
 	current_state = ''
 	A = 1
@@ -33,9 +28,7 @@ class Board:
 	MAX_DEPTH = 5
 
 	number_of_empty_cells = 64
-
-
-
+	
 	def __init__(self):
 		self.current_state = [[' ', 1, 2, 3, 4, 5, 6, 7, 8]]
 		self.current_state.append(['A', '-', '-', '-', '-', '-', '-', '-', '-', ])
@@ -55,8 +48,6 @@ class Board:
 			for col in range(0, 9):
 				print(self.current_state[row][col], end = ' ')
 			print()
-
-
 
 	def get_number_of_empty_cells(self):
 		return self.number_of_empty_cells
@@ -136,13 +127,6 @@ class Board:
 		elif row == 'H':
 			row = self.H
 
-		#row = int(row)
-		#col = int(col)
-		# print(row)
-		# print(col)
-		# print('row = ' + str(row))
-		# print('col = ' + str(col))
-
 		# !!! if the opponent (user) is doing the move, place 'O', otherwise, place 'X'
 		if char_to_place == self.COMPUTER_CHAR:
 			self.current_state[row][col] = self.COMPUTER_CHAR
@@ -151,27 +135,6 @@ class Board:
 		#self.decrement_number_of_empty_cells()
 
 		return [row, col]
-		# check_for_winner = self.check_for_winner(char_to_place, row, col)
-		# if check_for_winner != 0:
-		# 	if check_for_winner == -5000:
-		# 		print('You Win!')
-		# 	else:
-		# 		print('Computer Wins')
-		#print('check_for_winner = ' + str(check_for_winner))
-
-
-	# # same as check_game_over
-	# def terminal_test(self, char_to_check):
-	# 	if horizontal_test(char_to_check) == True:
-	# 		return True
-	# 	elif vertical_test(char_to_check) == True:
-	# 		return True
-	# 	else:
-	# 		return False
-
-
-	# @input:
-	# 	char_to_check - either 'X' or 'O'
 
 	#def horizontal_test(self, char_to_check, new_move_row, new_move_col):
 	def horizontal_test(self, char_to_check):
@@ -183,7 +146,6 @@ class Board:
 			value_to_return = -50000
 		else:
 			value_to_return = 50000
-
 
 		for row in range(1, 9):
 			for col in range(1, 9):
@@ -204,15 +166,9 @@ class Board:
 			sequence_started = False
 			sequence_length = 0
 
-
 		# set sequence_length back to 0, and sequence_started to false as the row ended
 		sequence_started = False
 		sequence_length = 0
-
-		
-
-
-
 
 		# if no winning move has been found, return 1 (for a draw)
 		value_to_return = 0
@@ -250,9 +206,6 @@ class Board:
 
 		sequence_started = False
 		sequence_length = 0
-		
-
-
 
 		value_to_return = 0
 		return value_to_return
@@ -295,8 +248,6 @@ class Board:
 
 		return value_to_return * SIGN
 
-
-
 	# returns 
 	#def evaluate(self, char_to_check, new_move_row, new_move_col):
 	def evaluate(self, char_to_check):
@@ -329,7 +280,6 @@ class Board:
 		case_3_4_o = 0
 		case_5_o = 0
 		case_6_7_o = 0
-	
 
 		for row in range(1, 9):
 			for col in range(1, 9):
@@ -341,7 +291,6 @@ class Board:
 
 
 				current_cell = self.current_state[row][col]
-				#print('**************' + str(current_cell))
 				
 				orientation = self.HORIZONTAL
 
@@ -474,9 +423,6 @@ class Board:
 			else:
 				return 0
 
-	# NOTE: The difference between the values of different configurations also played a big role.
-
-
 	#3) | O O - or - O O | or .. X O O - or - O O X .. - 200
 	# 	4 possible arrangements
 	#	| O O -
@@ -492,8 +438,6 @@ class Board:
 
 		next_cell = ''
 		next_next_cell = ''
-
-
 
 		if char_to_check == self.OPPONENT_CHAR:
 			other_char = self.COMPUTER_CHAR
@@ -554,15 +498,10 @@ class Board:
 				return 2000 * SIGN
 			# # - O O - current_cell is the 2nd O after - 
 			# elif previous_cell == char_to_check and previous_previous_cell == self.EMPTY_CHAR and next_cell == self.EMPTY_CHAR:
-			# 	return 400
-
-			
+			# 	return 400	
 			else:
 				return 0
-
-	
-	 
-
+			
 	#5) .. O - O O .. or .. O O - O - 20000
 	# .. O - O O .. 
 	# .. O O - O ..
@@ -720,18 +659,7 @@ class Board:
 			else:
 				return 0
 
-
-
-
-
-
-
-
-
-	# def cut_off_test(self):
-
-
-	# # the computer calls this
+	# the computer calls this
 	def make_a_move(self):
 		start_time = time.time()
 		elapsed_time = 0
@@ -763,52 +691,33 @@ class Board:
 
 					score = self.min(depth - 1, alpha, beta)
 
-
-					#if row == 5 and col == 6:
-						#self.print_board()
-						#print('best = ' + str(best))
-
-					#print('score = ' + str(score))
-
 					if score >= best:
 						best = score						
 						m_i = chr(row + 64)
 						m_row = row
 						m_j = col
 
-
 					# undo the move (if it was made)
 					self.undo_move(row, col)
 
 			elapsed_time = (time.time() - start_time) * 1000
 
-			#print('elapsed time = ' + str(elapsed_time))
 			if elapsed_time >= 5000:
 				break
 
-
 		print('My Move is ' + str(m_i) + ' ' + str(m_j))
 		self.place_the_move(m_row, m_j, char_to_check)
-
-	#def min(self, depth, alpha, beta, new_move_row, new_move_col):
+		
 	def min(self, depth, alpha, beta):
 		char_to_check = self.OPPONENT_CHAR
 		best = 200000
 		score = ''
-		#print('************')
-		#check_4_winner_value = self.check_for_winner(char_to_check, new_move_row, new_move_col)
 		check_4_winner_value = self.check_for_winner()
 		if check_4_winner_value != 0:
 			return check_4_winner_value
 
 		if depth == 0:
-			#evaluate = self.evaluate(char_to_check, new_move_row, new_move_col)
 			evaluate = self.evaluate(char_to_check)
-			#evaluate = self.evaluate_2(char_to_check)
-			# print('*****************************************************MIN')
-			# print('evaluate = ' + str(evaluate))
-			# self.print_board()
-			# print('*****************************************************MIN')
 			return evaluate
 
 		for row in range(1, 9):
@@ -820,19 +729,11 @@ class Board:
 
 					# place a move in the current row and col on the board
 					self.place_the_move(row, col, char_to_check)
-
-					#print('In min')
-					#self.print_board()
-
-					# v <-- MAX(v, MIN-VALUE(s, alpha, beta))
-					#score = self.max(depth - 1, alpha, beta, row, col)
 					score = self.max(depth - 1, alpha, beta)
 					if score < best:
 						best = score
-
 					# if v <= alpha then return v
 					if best <= alpha:
-
 						self.undo_move(row, col)
 						return best
 
@@ -842,16 +743,13 @@ class Board:
 
 					# undo the move (if it was made)
 					self.undo_move(row, col)
-
 		return best
 
-	#def max(self, depth, alpha, beta, new_move_row, new_move_col):
 	def max(self, depth, alpha, beta):
 		char_to_check = self.COMPUTER_CHAR
 		other_char = self.OPPONENT_CHAR
 		best = -200000
 		score = ''
-
 		
 		#check_4_winner_value = self.check_for_winner(char_to_check, new_move_row, new_move_col)
 		check_4_winner_value = self.check_for_winner()
@@ -860,13 +758,7 @@ class Board:
 
 
 		if depth == 0:
-			#evaluate = self.evaluate(char_to_check, new_move_row, new_move_col)
 			evaluate = self.evaluate(char_to_check)
-			#evaluate = self.evaluate_2(char_to_check)
-			# print('*********************')
-			# print('evaluate = ' + str(evaluate))
-			# self.print_board()
-			# print('*********************')
 			return evaluate
 
 
@@ -879,10 +771,6 @@ class Board:
 
 					# place a move in the current row and col on the board
 					self.place_the_move(row, col, char_to_check)
-
-
-					#print('In max')
-					#self.print_board()
 
 					# v <-- MAX(v, MIN-VALUE(s, alpha, beta))
 					#score = self.min(depth - 1, alpha, beta, row, col)
@@ -902,13 +790,10 @@ class Board:
 					if best > alpha:
 						alpha = best
 
-
-					# undo the move (if it was made)
+						# undo the move (if it was made)
 					self.undo_move(row, col)
 
 		return best
-
-
 
 	def check_for_winner(self):
 		return_value = 0
@@ -940,15 +825,8 @@ class Board:
 			# COMPUTER WINS
 			return return_value
 
-
-
-
-
-		
-
 	# if check_game_over returns 1, then the current state is not a terminal state
 	# if game is not over, then evaluate
-	#def check_game_over(self, new_move_row, new_move_col):
 	def check_game_over(self):
 		 char_to_check = self.opponent_char
 
